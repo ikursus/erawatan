@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,3 +7,34 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Route permohonan tuntutan
+// Route::get('tuntutan', 'TuntutanController@index');
+// Route::get('tuntutan/tambah', 'TuntutanController@create');
+// Route::post('tuntutan/tambah', 'TuntutanController@store');
+// Route::get('tuntutan/{id}/edit', 'TuntutanController@edit');
+// Route::patch('tuntutan/{id}/edit', 'TuntutanController@update');
+// Route::destroy('tuntutan/{id}', 'TuntutanController@destroy');
+// Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables');
+Route::resource('tuntutan', 'Pengguna\TuntutanController');
+
+
+
+
+
+Route::get('pengguna', function () {
+    
+    $users = DB::connection('mysqldbrujukan')
+    ->select('select * from tblpengguna');
+
+    // die and dump
+    dd($users);
+
+});
+
+Route::get('pengguna/{id}', function($id) {
+    $pengguna = DB::connection('mysqldbrujukan')
+    ->select('select * from tblpengguna where id = :id', ['id' => $id]);
+
+    dd($pengguna);
+});

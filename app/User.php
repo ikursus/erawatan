@@ -10,6 +10,12 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    // Maklumat connection database untuk table tblpengguna
+    protected $connection = 'mysqldbrujukan';
+
+    // Maklumat nama table yang model User ini perlu hubungi
+    protected $table = 'tblpengguna';
+
     /**
      * The attributes that are mass assignable.
      *

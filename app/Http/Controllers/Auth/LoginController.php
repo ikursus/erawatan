@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+use DB;
+use Auth;
+
 class LoginController extends Controller
 {
     /*
@@ -35,5 +39,48 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return Response
+     */
+    public function login(Request $request)
+    {
+        // Dapatkan no kp
+        $nokp = $request->input('nokp');
+
+        $pengguna = DB::connection('mysqldbrujukan')
+        ->table('tblpengguna')
+        ->where('penggunanokp', $nokp)
+        ->first();
+        //->select('select * from tblpengguna where penggunanokp = :nokp LIMIT 1', ['nokp' => $nokp]);
+        // Die and dump
+        //dd($pengguna);
+
+        Auth::loginUsingId($pengguna->id);
+
+        return redirect()->intended('home');
+
+        // $credentials = $request->only('penggunanokp', 'penggunakatalaluan');
+
+        // if (Auth::attempt($credentials)) {
+        //     // Authentication passed...
+        //     return redirect()->intended('dashboard');
+        // }
     }
 }
