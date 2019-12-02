@@ -16,7 +16,11 @@
 
 <div class="card-body">
 
-<table class="table">
+<p>
+    <a href="{{ route('tuntutan.create') }}" class="btn btn-primary">TUNTUTAN BARU</a>
+</p>
+
+<table class="table table-hover table-bordered">
 <thead class="thead-light">
     <tr>
         <th>

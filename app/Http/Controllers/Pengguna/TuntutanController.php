@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pengguna;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 
 class TuntutanController extends Controller
 {
@@ -24,7 +25,10 @@ class TuntutanController extends Controller
      */
     public function create()
     {
-        //
+        $pengguna = Auth::user();
+
+        return $pengguna->profile->entityname;
+        //return view('tuntutan.index');
     }
 
     /**
