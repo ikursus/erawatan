@@ -102,7 +102,22 @@
 
                         </div><!--/.col-md-8-->
                         <div class="col-md-4">
-                            <img src="{{ asset('images/placeholderuser.png') }}" class="img-fluid">
+                            <p><img src="{{ asset('images/placeholderuser.png') }}" class="img-fluid"></p>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-8">Jumlah Telah Dituntut</div>
+                                <div class="col-md-4">
+                                    RM200.00
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-8">Baki</div>
+                                <div class="col-md-4">
+                                    RM100.00
+                                </div>
+                            </div>
+
                         </div><!--/.col-md-4-->
                     </div><!--/.row-->
 
