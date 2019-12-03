@@ -7,8 +7,9 @@
 
         <div class="col-12">
 
-            <form method="POST" action="{{ route('tuntutan.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('tuntutan.update', $tuntutan->id) }}" enctype="multipart/form-data">
             @csrf
+            @method('PATCH')
             
             <div class="card">
 

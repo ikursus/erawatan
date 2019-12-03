@@ -96,6 +96,7 @@ class TuntutanController extends Controller
     public function edit(Tuntutan $tuntutan)
     {
         $pengguna = Auth::user();
+        // $pengguna = auth()->user();
 
         return view('tuntutan.edit', compact('tuntutan', 'pengguna'));
     }
@@ -107,9 +108,31 @@ class TuntutanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Tuntutan $tuntutan)
     {
-        //
+        // Semak jenis submission (simpan = draf / hantar = baru)
+        if ($request->has('hantar'))
+        {
+            // Validate data dari borang
+            $request->validate([
+                'ertuntutantarikhrawat' => 'required',
+                'ertuntutannoresit' => 'required',
+                'ertuntutanamaun' => 'required|numeric',
+                'fileresit' => 'required|mimes:docx,pdf,jpg,png',
+                'filedokumen' => 'required|mimes:docx,pdf,jpg,png'
+            ]);
+        }
+
+        // Dapatkan semua data dari borang
+        $data = $request->all();
+        $data['idpenggunakemaskini'] = Auth::user()->id;
+        $data['tkhmasakmskini'] = Carbon::now();
+
+        // Kemaskini data kepada table tuntutan
+        $tuntutan->update($data);
+
+        // Bagi respon akhir
+        return redirect()->route('tuntutan.index');
     }
 
     /**
@@ -118,9 +141,12 @@ class TuntutanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tuntutan $tuntutan)
     {
-        //
+        $tuntutan->delete();
+
+        // return redirect()->route('tuntutan.index');
+        return redirect()->back();
     }
 
     public function datatables()
