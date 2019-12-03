@@ -24,4 +24,10 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class, 'icno', 'penggunanokp');
     }
+
+    // Relationship kepada table tblrefindividu
+    public function individu()
+    {
+        return $this->hasOne(Individu::class, 'employeeno', 'employeeno');
+    }
 }

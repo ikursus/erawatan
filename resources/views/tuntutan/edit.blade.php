@@ -75,7 +75,7 @@
                             <div class="form-group row">
                                 <label for="individu_id" class="col-sm-3 col-form-label">Alamat Penuh Klinik</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control"></textarea>
+                                    <textarea class="form-control" name=></textarea>
                                 </div>
                             </div>
                             

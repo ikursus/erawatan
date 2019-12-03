@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 
 use App\Tuntutan;
+use App\Entiti;
 
 class TuntutanController extends Controller
 {
@@ -36,9 +37,18 @@ class TuntutanController extends Controller
         // Dapatkan rekod user yang sedang login
         $pengguna = Auth::user();
 
+        $pesakit = $pengguna->profile
+        ->individu()
+        ->select('individunama', 'id')
+        ->get();
+
+        $klinik = Entiti::whereIn('entitikod', ['02','03', '04'])
+        ->select('id', 'entitinama')
+        ->get();
+
         // Paparkan borang tuntutan
         // return $pengguna->profile->entityname;
-        return view('tuntutan.borang', compact('pengguna'));
+        return view('tuntutan.borang', compact('pengguna', 'pesakit', 'klinik'));
     }
 
     /**
