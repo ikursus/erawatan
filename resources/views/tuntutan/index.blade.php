@@ -10,7 +10,7 @@
 <div class="card">
 
 
-<div class="card-heading">
+<div class="card-header">
 
 </div>
 

@@ -25,10 +25,12 @@ class TuntutanController extends Controller
      */
     public function create()
     {
+        // Dapatkan rekod user yang sedang login
         $pengguna = Auth::user();
 
-        return $pengguna->profile->entityname;
-        //return view('tuntutan.index');
+        // Paparkan borang tuntutan
+        // return $pengguna->profile->entityname;
+        return view('tuntutan.borang', compact('pengguna'));
     }
 
     /**
