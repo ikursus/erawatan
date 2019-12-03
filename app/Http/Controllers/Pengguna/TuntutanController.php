@@ -41,7 +41,18 @@ class TuntutanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        if ($request->has('simpan'))
+        {
+            return 'simpan record';
+        }
+        if ($request->has('hantar'))
+        {
+            return 'hantar record';
+        }
+
+        return $data;
     }
 
     /**

@@ -7,6 +7,9 @@
 
         <div class="col-12">
 
+            <form method="POST" action="{{ route('tuntutan.store') }}" enctype="multipart/form-data">
+            @csrf
+            
             <div class="card">
 
 
@@ -89,14 +92,14 @@
                             <div class="form-group row">
                                 <label for="fileresit" class="col-sm-3 col-form-label">Muat Naik Resit</label>
                                 <div class="col-sm-9">
-                                    <input type="file" name="fileresit" value="">
+                                    <input type="file" name="fileresit">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label for="filedokumen" class="col-sm-3 col-form-label">Muat Naik Dokumen</label>
                                 <div class="col-sm-9">
-                                    <input type="file" name="filedokumen" value="">
+                                    <input type="file" name="filedokumen">
                                 </div>
                             </div>
 
@@ -129,13 +132,15 @@
                         Kembali
                     </a>
 
-                    <button type="submit" class="btn btn-primary">
-                        Simpan
-                    </button>
+                    <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
+                    
+                    <input type="submit" name="hantar" value="Hantar" class="btn btn-success">
 
                 </div>
 
             </div><!--/.card-->
+
+            </form>
 
 
         </div><!--/.col-12-->
