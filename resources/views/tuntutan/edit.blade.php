@@ -49,7 +49,7 @@
                             <div class="form-group row">
                                 <label for="ertuntutantarikhrawat" class="col-sm-3 col-form-label">Tarikh Rawatan</label>
                                 <div class="col-sm-9">
-                                    <input type="date" class="form-control" name="ertuntutantarikhrawat" value="">
+                                    <input type="date" class="form-control" name="ertuntutantarikhrawat" value="{{ $tuntutan->ertuntutantarikhrawat }}">
                                 </div>
                             </div>
 
@@ -81,21 +81,21 @@
                             <div class="form-group row">
                                 <label for="baki" class="col-sm-3 col-form-label">Baki Yang Boleh Dituntut (RM)</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="200.00">
+                                    <input type="number" min="1" step="1" class="form-control" name="baki" value="0.00">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label for="ertuntutannoresit" class="col-sm-3 col-form-label">No. Resit</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" name="ertuntutannoresit" value="">
+                                    <input type="text" class="form-control" name="ertuntutannoresit" value="{{ $tuntutan->ertuntutannoresit }}">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label for="ertuntutanamaun" class="col-sm-3 col-form-label">Amaun</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="">
+                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="{{ $tuntutan->ertuntutanamaun }}">
                                 </div>
                             </div>
                             

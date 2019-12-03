@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Pengguna;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use Carbon\Carbon;
+
+use App\Tuntutan;
 
 class TuntutanController extends Controller
 {
@@ -15,7 +18,12 @@ class TuntutanController extends Controller
      */
     public function index()
     {
-        return view('tuntutan.index');
+        // Dapatkan rekod tuntutan
+        $senarai_tuntutan = Tuntutan::all();
+
+        // dd($senarai_tuntutan);
+
+        return view('tuntutan.index', compact('senarai_tuntutan'));
     }
 
     /**
@@ -41,18 +49,31 @@ class TuntutanController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-
-        if ($request->has('simpan'))
-        {
-            return 'simpan record';
-        }
+        // Semak jenis submission (simpan = draf / hantar = baru)
         if ($request->has('hantar'))
         {
-            return 'hantar record';
+            // Validate data dari borang
+            $request->validate([
+                'ertuntutantarikhrawat' => 'required',
+                'ertuntutannoresit' => 'required',
+                'ertuntutanamaun' => 'required|numeric',
+                'fileresit' => 'required|mimes:docx,pdf,jpg,png',
+                'filedokumen' => 'required|mimes:docx,pdf,jpg,png'
+            ]);
         }
 
-        return $data;
+        // Dapatkan semua data dari borang
+        $data = $request->all();
+        $data['employeeno'] = Auth::user()->profile->employeeno;
+        $data['idpenggunamasuk'] = Auth::user()->id;
+        $data['tkhmasamasuk'] = Carbon::now();
+        $data['tkhmasakmskini'] = Carbon::now();
+
+        // Simpan data kepada table tuntutan
+        $tuntutan = Tuntutan::create($data);
+
+        // Bagi respon akhir
+        return redirect()->route('tuntutan.index');
     }
 
     /**
@@ -72,9 +93,11 @@ class TuntutanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tuntutan $tuntutan)
     {
-        //
+        $pengguna = Auth::user();
+
+        return view('tuntutan.edit', compact('tuntutan', 'pengguna'));
     }
 
     /**

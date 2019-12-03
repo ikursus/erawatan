@@ -12,6 +12,13 @@ class Profile extends Model
     // Maklumat nama table yang model User ini perlu hubungi
     protected $table = 'payrollfamaofficer';
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     // Relationship kepada table tblpengguna
     public function pengguna()
     {

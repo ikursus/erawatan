@@ -48,6 +48,20 @@
 </tead>
 <tbody>
 
+    @foreach ($senarai_tuntutan as $tuntutan)
+    <tr>
+        <td>{{ $tuntutan->id ?? "" }}</td>
+        <td>{{ $tuntutan->ertuntutantarikhrawat ?? "" }}</td>
+        <td>{{ $tuntutan->individu_id ?? "" }}</td>
+        <td>{{ $tuntutan->klinik_id ?? "" }}</td>
+        <td>{{ $tuntutan->ertuntutanamaun ?? "" }}</td>
+        <td></td>
+        <td>
+            <a href="{{ route('tuntutan.edit', $tuntutan->id) }}" class="btn btn-sm btn-info">EDIT</a>
+        </td>
+    </tr>
+    @endforeach
+
 </tbody>
 </table>
 
