@@ -27,6 +27,7 @@ class TuntutanController extends Controller
             'tblertuntutan.*'
         ]);
 
+        // Return response ajax datatables
         return DataTables::of($query)      
         ->addColumn('individu', function ($tuntutan) {
             return $tuntutan->individu->individunama ?? "";
