@@ -129,11 +129,11 @@ return [
     |
     */
 
-    'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
-    ],
+    // 'custom' => [
+    //     'ertuntutantarikhrawat' => [
+    //         'required' => 'Tarikh rawat wajib di isi',
+    //     ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------

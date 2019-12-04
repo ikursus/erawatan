@@ -110,6 +110,12 @@
                                 <label for="fileresit" class="col-sm-3 col-form-label">Muat Naik Resit</label>
                                 <div class="col-sm-9">
                                     <input type="file" name="fileresit">
+
+                                    <br>
+                                    
+                                    @if ($tuntutan->dokumen()->where('jenisdokumen_id', 2)->count() > 0)
+                                    <a href="{{ asset('storage/' . $tuntutan->dokumen()->where('jenisdokumen_id', 2)->first()->erdokumenpath) }}">Download Resit Terdahulu</a>    
+                                    @endif
                                 </div>
                             </div>
                             
@@ -117,6 +123,12 @@
                                 <label for="filedokumen" class="col-sm-3 col-form-label">Muat Naik Dokumen</label>
                                 <div class="col-sm-9">
                                     <input type="file" name="filedokumen">
+                                    
+                                    <br>
+                                    
+                                    @if ($tuntutan->dokumen()->where('jenisdokumen_id', 1)->count() > 0)
+                                    <a href="{{ asset('storage/' . $tuntutan->dokumen()->where('jenisdokumen_id', 1)->first()->erdokumenpath) }}">Download Dokumen Terdahulu</a>    
+                                    @endif
                                 </div>
                             </div>
 

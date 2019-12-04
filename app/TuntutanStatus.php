@@ -36,4 +36,9 @@ class TuntutanStatus extends Model
         'idpenggunakmskini',
         'tkhmasakmskini'
     ];
+    // Relation kepada table tblrefstatus
+    public function refStatus()
+    {
+        return $this->belongsTo(Status::class, 'statustuntutan_id');
+    }
 }

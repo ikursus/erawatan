@@ -16,7 +16,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::patch('tuntutan/{id}/edit', 'TuntutanController@update');
 // Route::destroy('tuntutan/{id}', 'TuntutanController@destroy');
 // Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables');
+Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables')->name('tuntutan.datatables');
 Route::resource('tuntutan', 'Pengguna\TuntutanController');
+
 
 
 

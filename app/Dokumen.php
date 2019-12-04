@@ -38,4 +38,10 @@ class Dokumen extends Model
         'idpenggunakmskini',
         'tkhmasakmskini'
     ];
+
+    // Relation ke table tuntutan
+    public function tuntutan()
+    {
+        return $this->belongsTo(Tuntutan::class, 'ertuntutan_id');
+    }
 }

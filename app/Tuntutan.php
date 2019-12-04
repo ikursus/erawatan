@@ -41,5 +41,30 @@ class Tuntutan extends Model
     {
         return $this->hasMany(TuntutanStatus::class, 'ertuntutan_id');
     }
+
+    // Relation kepada tblertuntutanstatus
+    public function statusAkhir()
+    {
+        return $this->hasOne(TuntutanStatus::class, 'ertuntutan_id')
+        ->orderBy('id', 'desc');
+    }
+
+    // Relation kepada tblrefentiti
+    public function entiti()
+    {
+        return $this->belongsTo(Entiti::class, 'entiti_id', 'id');
+    }
+
+    // Relation kepada tblrefentiti
+    public function individu()
+    {
+        return $this->belongsTo(Individu::class, 'individu_id', 'id');
+    }
+
+    // Relation kepada tblerdokumen
+    public function dokumen()
+    {
+        return $this->hasMany(Dokumen::class, 'ertuntutan_id');
+    }
     
 }

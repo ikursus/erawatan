@@ -6,12 +6,44 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
+use DataTables;
 
 use App\Tuntutan;
 use App\Entiti;
 
 class TuntutanController extends Controller
 {
+
+    public function datatables()
+    {
+        // Query ke table tuntutan
+        // $query = Tuntutan::with('entiti')
+        // ->with('individu')
+        // ->select([
+        //     'tblertuntutan.*'
+        // ]);
+
+        $query = Tuntutan::select([
+            'tblertuntutan.*'
+        ]);
+
+        return DataTables::of($query)      
+        ->addColumn('individu', function ($tuntutan) {
+            return $tuntutan->individu->individunama ?? "";
+        })
+        ->addColumn('entiti', function ($tuntutan) {
+            return $tuntutan->entiti->entitinama ?? "";
+        })
+        ->addColumn('status', function ($tuntutan) {
+            return $tuntutan->statusAkhir->refStatus->status ?? "";
+        })
+        ->addColumn('action', function ($tuntutan) {
+            return view('tuntutan.actions', compact('tuntutan'));
+        })
+        ->make(true);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -19,12 +51,7 @@ class TuntutanController extends Controller
      */
     public function index()
     {
-        // Dapatkan rekod tuntutan
-        $senarai_tuntutan = Tuntutan::all();
-
-        // dd($senarai_tuntutan);
-
-        return view('tuntutan.index', compact('senarai_tuntutan'));
+        return view('tuntutan.index');
     }
 
     /**
@@ -67,8 +94,15 @@ class TuntutanController extends Controller
                 'ertuntutantarikhrawat' => 'required',
                 'ertuntutannoresit' => 'required',
                 'ertuntutanamaun' => 'required|numeric',
-                'fileresit' => 'required|mimes:docx,pdf,jpg,png',
-                'filedokumen' => 'required|mimes:docx,pdf,jpg,png'
+                'fileresit' => 'mimes:docx,pdf,jpg,png',
+                'filedokumen' => 'mimes:docx,pdf,jpg,png'
+            ]);
+        }
+        else
+        {
+            $request->validate([
+                'fileresit' => 'mimes:docx,pdf,jpg,png',
+                'filedokumen' => 'mimes:docx,pdf,jpg,png'
             ]);
         }
 
@@ -93,6 +127,42 @@ class TuntutanController extends Controller
 
         // Simpan dataStatus kepada table tblertuntutanstatus
         $tuntutan->status()->create($dataStatus);
+
+        // Path untuk simpan dokumen
+        $document_path = 'documents/' . auth()->user()->penggunanokp;
+
+        // Sediakan data untuk dokumen jenis resit
+        if ($request->hasFile('fileresit'))
+        {
+            $resit = $request->file('fileresit');
+            $namaresit = $resit->getClientOriginalName();
+
+            // upload dan simpan file
+            $resitEncrypted = $resit->store($document_path, 'public');
+
+            $dataResit['jenisdokumen_id'] = 2;
+            $dataResit['erdokumennama'] = $namaresit;
+            $dataResit['erdokumenpath'] = $resitEncrypted;
+
+            // Simpan rekod ke table tbldokumen
+            $tuntutan->dokumen()->create($dataResit);
+        }
+
+        // Sediakan data untuk dokumen tambahan
+        if ($request->hasFile('filedokumen'))
+        {
+            $dokumen = $request->file('filedokumen');
+            $namadokumen = $dokumen->getClientOriginalName();
+
+            $documentEncrypted = $dokumen->store($document_path, 'public');
+
+            $dataDokumen['jenisdokumen_id'] = 1;
+            $dataDokumen['erdokumennama'] = $namadokumen;
+            $dataDokumen['erdokumenpath'] = $documentEncrypted;
+            
+            // Simpan rekod ke table tbldokumen
+            $tuntutan->dokumen()->create($dataDokumen);
+        }
 
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');
@@ -202,10 +272,5 @@ class TuntutanController extends Controller
 
         // return redirect()->route('tuntutan.index');
         return redirect()->back();
-    }
-
-    public function datatables()
-    {
-
     }
 }
