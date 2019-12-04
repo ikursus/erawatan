@@ -59,6 +59,9 @@
                                 <div class="col-sm-9">
                                     <select name="individu_id" class="form-control">
                                         <option value="">-- Sila Pilih --</option>
+                                        @foreach( $pesakit as $individu )
+                                        <option value="{{ $individu->id }}"{{ $individu->id == $tuntutan->individu_id ? ' selected=selected' : null }}>{{ $individu->individunama }}
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -68,6 +71,9 @@
                                 <div class="col-sm-9">
                                     <select name="entiti_id" class="form-control">
                                         <option value="">-- Sila Pilih --</option>
+                                        @foreach( $klinik as $entiti )
+                                        <option value="{{ $entiti->id }}"{{ $entiti->id == $tuntutan->entiti_id ? ' selected=selected' : null }}>{{ $entiti->entitinama }}
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

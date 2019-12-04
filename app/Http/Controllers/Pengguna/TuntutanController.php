@@ -120,7 +120,16 @@ class TuntutanController extends Controller
         $pengguna = Auth::user();
         // $pengguna = auth()->user();
 
-        return view('tuntutan.edit', compact('tuntutan', 'pengguna'));
+        $pesakit = $pengguna->profile
+        ->individu()
+        ->select('individunama', 'id')
+        ->get();
+
+        $klinik = Entiti::whereIn('entitikod', ['02','03', '04'])
+        ->select('id', 'entitinama')
+        ->get();
+
+        return view('tuntutan.edit', compact('tuntutan', 'pengguna', 'pesakit', 'klinik'));
     }
 
     /**
@@ -165,7 +174,7 @@ class TuntutanController extends Controller
         {
             $statusNo = 1;
         }
-
+        
         $dataStatus['ertuntutanstatusno'] = $statusNo;
         $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
         $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
@@ -175,7 +184,7 @@ class TuntutanController extends Controller
         $dataStatus['tkhmasakmskini'] = Carbon::now();
 
         // Simpan dataStatus kepada table tblertuntutanstatus
-        $tuntutan->status()->create($dataStatus);
+        $tuntutan->status()->create($dataStatus);        
 
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');
