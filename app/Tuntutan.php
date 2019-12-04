@@ -35,5 +35,11 @@ class Tuntutan extends Model
         'tkhmasamasuk',
         'idpenggunakmskini'
     ];
+
+    // Relation kepada tblertuntutanstatus
+    public function status()
+    {
+        return $this->hasMany(TuntutanStatus::class, 'ertuntutan_id');
+    }
     
 }

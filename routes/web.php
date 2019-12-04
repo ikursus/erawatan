@@ -21,7 +21,6 @@ Route::resource('tuntutan', 'Pengguna\TuntutanController');
 
 
 
-
 Route::get('pengguna', function () {
     
     $users = DB::connection('mysqldbrujukan')

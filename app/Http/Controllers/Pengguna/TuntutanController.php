@@ -79,8 +79,20 @@ class TuntutanController extends Controller
         $data['tkhmasamasuk'] = Carbon::now();
         $data['tkhmasakmskini'] = Carbon::now();
 
-        // Simpan data kepada table tuntutan
+        // Simpan data kepada table tblertuntutan
         $tuntutan = Tuntutan::create($data);
+
+        // Sediakan dataStatus untuk table tblertuntutanstatus
+        $dataStatus['ertuntutanstatusno'] = 1;
+        $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
+        $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
+        $dataStatus['employeeno'] = $data['employeeno'];
+        $dataStatus['idpenggunamasuk'] = Auth::user()->id;
+        $dataStatus['tkhmasamasuk'] = Carbon::now();
+        $dataStatus['tkhmasakmskini'] = Carbon::now();
+
+        // Simpan dataStatus kepada table tblertuntutanstatus
+        $tuntutan->status()->create($dataStatus);
 
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');
@@ -140,6 +152,30 @@ class TuntutanController extends Controller
 
         // Kemaskini data kepada table tuntutan
         $tuntutan->update($data);
+
+        // Sediakan data untuk table tblertuntutanstatus
+        if ( $tuntutan->status()->count() > 0 )
+        {
+            $statusNo = ++$tuntutan->status()
+            ->orderBy('id', 'desc')
+            ->first()
+            ->ertuntutanstatusno;
+        }
+        else
+        {
+            $statusNo = 1;
+        }
+
+        $dataStatus['ertuntutanstatusno'] = $statusNo;
+        $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
+        $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
+        $dataStatus['employeeno'] = $tuntutan->employeeno;
+        $dataStatus['idpenggunamasuk'] = Auth::user()->id;
+        $dataStatus['tkhmasamasuk'] = Carbon::now();
+        $dataStatus['tkhmasakmskini'] = Carbon::now();
+
+        // Simpan dataStatus kepada table tblertuntutanstatus
+        $tuntutan->status()->create($dataStatus);
 
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');
