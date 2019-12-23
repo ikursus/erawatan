@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\Mail;
 
 use App\Tuntutan;
 use App\Entiti;
+use App\Mail\TuntutanBaru;
 
 class TuntutanController extends Controller
 {
 
-    public function datatables()
+    public function datatables(Request $request)
     {
         // Query ke table tuntutan
         // $query = Tuntutan::with('entiti')
@@ -23,15 +25,26 @@ class TuntutanController extends Controller
         //     'tblertuntutan.*'
         // ]);
 
-        $query = Tuntutan::select([
-            'tblertuntutan.*'
-        ]);
+        // Check filter custom based on Entiti
+        if ($request->has('entiti') && !is_null($request->input('entiti')))
+        {
+            $query = Tuntutan::with('individu')
+            ->where('entiti_id', '=', $request->input('entiti'))
+            ->select([
+                'tblertuntutan.*'
+            ]);
+        }
+        else
+        {
+            $query = Tuntutan::with('individu')
+            ->select([
+                'tblertuntutan.*'
+            ]);
+            
+        }
 
         // Return response ajax datatables
-        return DataTables::of($query)      
-        ->addColumn('individu', function ($tuntutan) {
-            return $tuntutan->individu->individunama ?? "";
-        })
+        return DataTables::of($query)
         ->addColumn('entiti', function ($tuntutan) {
             return $tuntutan->entiti->entitinama ?? "";
         })
@@ -52,7 +65,11 @@ class TuntutanController extends Controller
      */
     public function index()
     {
-        return view('tuntutan.index');
+        $senarai_entiti = Entiti::whereIn('entitikod', ['02', '03', '04'])
+        ->select('entitinama', 'id')
+        ->get();
+
+        return view('tuntutan.index', compact('senarai_entiti'));
     }
 
     /**
@@ -165,6 +182,11 @@ class TuntutanController extends Controller
             $tuntutan->dokumen()->create($dataDokumen);
         }
 
+        if ($request->has('hantar'))
+        {
+            Mail::to('system@erawatan.test')->send(new TuntutanBaru($tuntutan));
+        }
+
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');
     }
@@ -200,7 +222,10 @@ class TuntutanController extends Controller
         ->select('id', 'entitinama')
         ->get();
 
-        return view('tuntutan.edit', compact('tuntutan', 'pengguna', 'pesakit', 'klinik'));
+        // Dapatkan jumlah telah dituntut
+        $jumlah_telah_dituntut = Tuntutan::jumlahTelahDituntut($tuntutan->employeeno);
+
+        return view('tuntutan.edit', compact('tuntutan', 'pengguna', 'pesakit', 'klinik', 'jumlah_telah_dituntut'));
     }
 
     /**
@@ -212,6 +237,7 @@ class TuntutanController extends Controller
      */
     public function update(Request $request, Tuntutan $tuntutan)
     {
+
         // Semak jenis submission (simpan = draf / hantar = baru)
         if ($request->has('hantar'))
         {
@@ -255,7 +281,12 @@ class TuntutanController extends Controller
         $dataStatus['tkhmasakmskini'] = Carbon::now();
 
         // Simpan dataStatus kepada table tblertuntutanstatus
-        $tuntutan->status()->create($dataStatus);        
+        $tuntutan->status()->create($dataStatus);
+
+        if ($request->has('hantar'))
+        {
+            Mail::to('system@erawatan.test')->send(new TuntutanBaru($tuntutan));
+        }
 
         // Bagi respon akhir
         return redirect()->route('tuntutan.index');

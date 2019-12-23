@@ -54,6 +54,14 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        
+        // Extra upload disk setting
+        'public_dokumen' => [
+            'driver' => 'local',
+            'root' => public_path('dokumen'),
+            'url' => env('APP_URL').'/dokumen',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

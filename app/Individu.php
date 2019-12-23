@@ -43,9 +43,9 @@ class Individu extends Model
         'tkhmasakmskini'
     ];
 
-    // Relationship kepada table payrollfamaofficer
-    public function individu()
+    // Relationship kepada table ertuntutan
+    public function tuntutan()
     {
-        return $this->hasOne(Profile::class, 'employeeno', 'employeeno');
+        return $this->hasMany(Tuntutan::class, 'individu_id');
     }
 }

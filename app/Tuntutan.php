@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Carbon\Carbon;
+
 class Tuntutan extends Model
 {
     // Maklumat connection database MySQL
@@ -52,19 +54,28 @@ class Tuntutan extends Model
     // Relation kepada tblrefentiti
     public function entiti()
     {
-        return $this->belongsTo(Entiti::class, 'entiti_id', 'id');
+        return $this->belongsTo(Entiti::class, 'entiti_id')->withDefault(['entitinama' => 'TIADA REKOD']);
     }
 
     // Relation kepada tblrefentiti
     public function individu()
     {
-        return $this->belongsTo(Individu::class, 'individu_id', 'id');
+        return $this->belongsTo(Individu::class, 'individu_id')->withDefault(['individunama' => 'TIADA NAMA']);
     }
 
     // Relation kepada tblerdokumen
     public function dokumen()
     {
         return $this->hasMany(Dokumen::class, 'ertuntutan_id');
+    }
+
+    public static function jumlahTelahDituntut($employee)
+    {
+        $current_year = Carbon::now()->year;
+
+        return self::where('employeeno', '=', $employee)
+        ->whereYear('ertuntutantarikhrawat', $current_year)
+        ->sum('ertuntutanamaun');
     }
     
 }

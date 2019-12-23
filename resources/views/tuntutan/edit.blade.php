@@ -88,7 +88,7 @@
                             <div class="form-group row">
                                 <label for="baki" class="col-sm-3 col-form-label">Baki Yang Boleh Dituntut (RM)</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="baki" value="0.00">
+                                    <input type="number" min="1" step="1" class="form-control" name="baki" value="0.00" readonly>
                                 </div>
                             </div>
                             
@@ -139,7 +139,7 @@
                             <div class="form-group row">
                                 <div class="col-md-8">Jumlah Telah Dituntut</div>
                                 <div class="col-md-4">
-                                    RM200.00
+                                    {{ $jumlah_telah_dituntut ?? "0.00" }}
                                 </div>
                             </div>
                             
