@@ -16,11 +16,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::patch('tuntutan/{id}/edit', 'TuntutanController@update');
 // Route::destroy('tuntutan/{id}', 'TuntutanController@destroy');
 // Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables');
-Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables')->name('tuntutan.datatables');
-Route::get('tuntutan/export', 'Pengguna\TuntutanExportController@export')->name('tuntutan.export');
-Route::get('tuntutan/pdf', 'Pengguna\TuntutanExportController@pdf')->name('tuntutan.pdf');
-Route::post('tuntutan/{id}/status', 'Pengguna\TuntutanStatusController@update')->name('tuntutan.status.update');
-Route::resource('tuntutan', 'Pengguna\TuntutanController');
+
+
+Route::group(['middleware' => ['auth', 'admin.only'] ], function () {
+
+    Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables')->name('tuntutan.datatables');
+    Route::get('tuntutan/export', 'Pengguna\TuntutanExportController@export')->name('tuntutan.export');
+    Route::get('tuntutan/pdf', 'Pengguna\TuntutanExportController@pdf')->name('tuntutan.pdf');
+    Route::post('tuntutan/{id}/status', 'Pengguna\TuntutanStatusController@update')->name('tuntutan.status.update');
+    Route::resource('tuntutan', 'Pengguna\TuntutanController');
+    
+});
+
+
 
 
 

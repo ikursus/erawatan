@@ -55,4 +55,33 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class, 'icno', 'penggunanokp');
     }
+
+    // Relationship kepada table tblcapaianpengguna dimana ID aplikasi erawatan = 3
+    public function capaian()
+    {
+        return $this->hasOne(CapaianPengguna::class, 'pengguna_id')
+        ->where('aplikasi_id', '=', 3);
+    }
+
+    // Semak role pengguna adakah admin (ID = 1)?
+    public function isAdmin()
+    {
+        if (auth()->user()->capaian->perananpengguna_id == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Semak role pengguna adakah kewangan (ID = 7)?
+    public function isKewangan()
+    {
+        if (auth()->user()->capaian->perananpengguna_id == 7)
+        {
+            return true;
+        }
+        
+        return false;   
+    }
 }
