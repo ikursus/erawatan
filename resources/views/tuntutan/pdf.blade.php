@@ -20,7 +20,11 @@
 <body>
 
     <section>
-
+        <div>
+            LOGO
+        </div>
+        <div>ADDRESS</div>
+        <hr>
     </section>
 
     <section>
