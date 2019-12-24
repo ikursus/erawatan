@@ -59,6 +59,7 @@
         </table>
         
     </section>
+        <hr>
         <div>
             Copyright &copy; FAMA. All Rights Reserved.
         </div>
