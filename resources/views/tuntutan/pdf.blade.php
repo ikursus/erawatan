@@ -15,6 +15,10 @@
             border: solid 1px black;
             padding: 10px;
         }
+        th {
+            background-color: #4CAF50;
+            color: #FFFFFF;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +59,9 @@
         </table>
         
     </section>
-
+        <div>
+            Copyright &copy; FAMA. All Rights Reserved.
+        </div>
     <section>
 
     </section>
