@@ -24,7 +24,7 @@
 
 <p>
     <a href="{{ route('tuntutan.create') }}" class="btn btn-primary">TUNTUTAN BARU</a>
-</p>
+    <a href="{{ route('tuntutan.export', ['entiti' => request('entiti')]) }}" class="btn btn-success">EXPORT TUNTUTAN</a>
 
 <div class="row mb-3">
     <div class="col-12">

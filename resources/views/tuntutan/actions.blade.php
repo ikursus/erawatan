@@ -20,12 +20,10 @@
             </button>
         </div>
         <div class="modal-body">
-            <p>Adakah anda pasti?</p>
+            <p>Adakah anda pasti untuk mengesahkan status bayaran kepada TELAH DIBAYAR?</p>
             <div class="form-group">
                 <label for="ertuntutanstatuscatatan">Catatan</label>
-                <textarea name="ertuntutanstatuscatatan" class="form-control">
-
-                </textarea>
+                <textarea name="ertuntutanstatuscatatan" class="form-control"></textarea>
             </div>
         </div>
         <div class="modal-footer">
