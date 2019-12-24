@@ -54,9 +54,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                                 </li>
+                                @if (auth()->user()->isAdmin() )
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('tuntutan.index') }}">Tuntutan</a>
                                 </li>
+                                @endif
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->penggunanama }} <span class="caret"></span>
                                 </a>

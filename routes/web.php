@@ -18,35 +18,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables');
 
 
-Route::group(['middleware' => ['auth', 'admin.only'] ], function () {
+Route::group([
+    'middleware' => ['auth', 'admin.only'], 
+    'prefix' => 'management'
+], 
+function () {
 
     Route::get('tuntutan/datatables', 'Pengguna\TuntutanController@datatables')->name('tuntutan.datatables');
     Route::get('tuntutan/export', 'Pengguna\TuntutanExportController@export')->name('tuntutan.export');
     Route::get('tuntutan/pdf', 'Pengguna\TuntutanExportController@pdf')->name('tuntutan.pdf');
     Route::post('tuntutan/{id}/status', 'Pengguna\TuntutanStatusController@update')->name('tuntutan.status.update');
     Route::resource('tuntutan', 'Pengguna\TuntutanController');
-    
-});
-
-
-
-
-
-
-
-Route::get('pengguna', function () {
-    
-    $users = DB::connection('mysqldbrujukan')
-    ->select('select * from tblpengguna');
-
-    // die and dump
-    dd($users);
 
 });
 
-Route::get('pengguna/{id}', function($id) {
-    $pengguna = DB::connection('mysqldbrujukan')
-    ->select('select * from tblpengguna where id = :id', ['id' => $id]);
-
-    dd($pengguna);
+Route::get('password', function() {
+    return bcrypt('password');
 });

@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'penggunanokp', 'email', 'erkatalaluan',
     ];
 
     /**
@@ -38,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'erkatalaluan'
     ];
 
     /**
@@ -83,5 +83,10 @@ class User extends Authenticatable
         }
         
         return false;   
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->erkatalaluan;
     }
 }

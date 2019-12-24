@@ -8,14 +8,12 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @include('layouts/alerts')
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
-                    You are logged in {{ $pengguna->penggunanama ?? "DEFAULT VALUE" }} !
+                    @include('layouts/alerts')
+
+                    Selamat datang {{ $pengguna->penggunanama ?? "" }} !
+
+                    
                 </div>
             </div>
         </div>
