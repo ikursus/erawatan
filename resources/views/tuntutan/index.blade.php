@@ -25,6 +25,7 @@
 <p>
     <a href="{{ route('tuntutan.create') }}" class="btn btn-primary">TUNTUTAN BARU</a>
     <a href="{{ route('tuntutan.export', ['entiti' => request('entiti')]) }}" class="btn btn-success">EXPORT TUNTUTAN</a>
+    <a href="{{ route('tuntutan.pdf', ['entiti' => request('entiti')]) }}" class="btn btn-success">DOWNLOAD PDF</a>
 
 <div class="row mb-3">
     <div class="col-12">
@@ -59,27 +60,12 @@
 <table class="table table-hover table-bordered" id="tuntutan-datatables">
 <thead class="thead-light">
     <tr>
-        <th>
-        #
-        </th>
-        <th>
-            TARIKH RAWATAN
-        </th>
-        <th>
-            NAMA PESAKIT
-        </th>
-        <th>
-            NAMA KLINIK
-        </th>
-        <th>
-            AMAUN
-        </th>
-        <th>
-            STATUS BAYARAN
-        </th>
-        <th>
-            TINDAKAN
-        </th>
+        <th>#</th>
+        <th>TARIKH RAWATAN</th>
+        <th>NAMA PESAKIT</th>
+        <th>NAMA KLINIK</th>
+        <th>AMAUN</th>
+        <th>STATUS BAYARAN</th>
     </tr>
 </thead>
 </table>
