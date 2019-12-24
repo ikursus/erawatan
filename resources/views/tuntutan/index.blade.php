@@ -66,6 +66,7 @@
         <th>NAMA KLINIK</th>
         <th>AMAUN</th>
         <th>STATUS BAYARAN</th>
+        <th>TINDAKAN</th>
     </tr>
 </thead>
 </table>
