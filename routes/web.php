@@ -64,7 +64,6 @@ function () {
     Route::get('tuntutan/datatables', 'TuntutanController@datatables')->name('tuntutan.datatables');
     Route::get('tuntutan/export', 'TuntutanExportController@export')->name('tuntutan.export');
     Route::get('tuntutan/pdf', 'TuntutanExportController@pdf')->name('tuntutan.pdf');
-    Route::post('tuntutan/{id}/status', 'TuntutanStatusController@update')->name('tuntutan.status.update');
     Route::resource('tuntutan', 'TuntutanController');
 
     // Rekod Individu
