@@ -4,9 +4,9 @@
 </div>
 @endif
                     
-@if (session('status'))
+@if (session('alert-success'))
 <div class="alert alert-success" role="alert">
-    {{ session('status') }}
+    {{ session('alert-success') }}
 </div>
 @endif
 

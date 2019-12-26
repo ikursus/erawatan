@@ -7,7 +7,7 @@
 
         <div class="col-12">
 
-            <form method="POST" action="{{ route('tuntutan.update', $tuntutan->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.tuntutan.update', $tuntutan->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             
@@ -157,7 +157,7 @@
 
                 <div class="card-footer">
 
-                    <a href="{{ route('tuntutan.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.tuntutan.index') }}" class="btn btn-secondary">
                         Kembali
                     </a>
 

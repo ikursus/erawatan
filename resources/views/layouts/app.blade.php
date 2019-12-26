@@ -44,19 +44,25 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
                                 </li>
-                                @if (auth()->user()->isAdmin() )
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('tuntutan.index') }}">Tuntutan</a>
+                                    <a class="nav-link" href="{{ route('pengguna.tuntutan.index') }}">Rekod Tuntutan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('pengguna.individu.index') }}">Rekod Individu</a>
+                                </li>
+                                @if (auth()->user()->isAdmin() && request()->is('admin/*'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.tuntutan.index') }}">Pengurusan Tuntutan</a>
+                                </li>
+                                @endif
+                                @if (auth()->user()->isKewangan() && request()->is('kewangan/*'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('kewangan.tuntutan.index') }}">Status Tuntutan</a>
                                 </li>
                                 @endif
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

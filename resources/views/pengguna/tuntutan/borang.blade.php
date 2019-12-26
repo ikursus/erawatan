@@ -7,7 +7,7 @@
 
         <div class="col-12">
 
-            <form method="POST" action="{{ route('tuntutan.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('pengguna.tuntutan.store') }}" enctype="multipart/form-data">
             @csrf
             
             <div class="card">
@@ -144,7 +144,7 @@
 
                 <div class="card-footer">
 
-                    <a href="{{ route('tuntutan.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('pengguna.tuntutan.index') }}" class="btn btn-secondary">
                         Kembali
                     </a>
 

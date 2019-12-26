@@ -1,4 +1,4 @@
-    <a href="{{ route('tuntutan.edit', $tuntutan->id) }}" class="btn btn-sm btn-info">EDIT</a>
+    <a href="{{ route('admin.tuntutan.edit', $tuntutan->id) }}" class="btn btn-sm btn-info">EDIT</a>
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-status-{{ $tuntutan->id }}">
@@ -9,7 +9,7 @@
     <div class="modal fade" id="modal-status-{{ $tuntutan->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         
-        <form method="POST" action="{{ route('tuntutan.status.update', $tuntutan->id) }}">
+        <form method="POST" action="{{ route('admin.tuntutan.status.update', $tuntutan->id) }}">
         @csrf
 
         <div class="modal-content">
@@ -46,7 +46,7 @@
     <div class="modal fade" id="modal-delete-{{ $tuntutan->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         
-        <form method="POST" action="{{ route('tuntutan.destroy', $tuntutan->id) }}">
+        <form method="POST" action="{{ route('admin.tuntutan.destroy', $tuntutan->id) }}">
         @csrf
         @method('DELETE')
 

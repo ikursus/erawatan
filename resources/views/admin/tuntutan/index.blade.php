@@ -23,14 +23,14 @@
 <div class="card-body">
 
 <p>
-    <a href="{{ route('tuntutan.create') }}" class="btn btn-primary">TUNTUTAN BARU</a>
-    <a href="{{ route('tuntutan.export', ['entiti' => request('entiti')]) }}" class="btn btn-success">EXPORT TUNTUTAN</a>
-    <a href="{{ route('tuntutan.pdf', ['entiti' => request('entiti')]) }}" class="btn btn-warning">DOWNLOAD PDF</a>
+    <a href="{{ route('admin.tuntutan.create') }}" class="btn btn-primary">TUNTUTAN BARU</a>
+    <a href="{{ route('admin.tuntutan.export', ['entiti' => request('entiti')]) }}" class="btn btn-success">EXPORT TUNTUTAN</a>
+    <a href="{{ route('admin.tuntutan.pdf', ['entiti' => request('entiti')]) }}" class="btn btn-warning">DOWNLOAD PDF</a>
 
 <div class="row mb-3">
     <div class="col-12">
 
-        <form method="GET" action="{{ route('tuntutan.index') }}">
+        <form method="GET" action="{{ route('admin.tuntutan.index') }}">
 
         <div class="card">
             <div class="card-header">
@@ -95,7 +95,7 @@ $(document).ready( function () {
     $('#tuntutan-datatables').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('tuntutan.datatables', ['entiti' => request()->input('entiti')]) }}",
+        ajax: "{{ route('admin.tuntutan.datatables', ['entiti' => request()->input('entiti')]) }}",
         columns: [
             { data: 'id', name: 'tblertuntutan.id' },
             { data: 'ertuntutantarikhrawat', name: 'tblertuntutan.ertuntutantarikhrawat' },

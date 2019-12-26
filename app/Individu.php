@@ -48,4 +48,10 @@ class Individu extends Model
     {
         return $this->hasMany(Tuntutan::class, 'individu_id');
     }
+
+    // Relationship kepada table ertuntutan
+    public function hubungan()
+    {
+        return $this->belongsTo(Hubungan::class);
+    }
 }

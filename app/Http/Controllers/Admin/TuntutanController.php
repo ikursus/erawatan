@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Pengguna;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class TuntutanController extends Controller
     public function __construct()
     {
         // Tetapan lokasi folder resources/views/admin/tuntutan
-        $this->theme = 'pengguna.tuntutan';
+        $this->theme = 'admin.tuntutan';
     }
 
     public function datatables(Request $request)
@@ -28,7 +28,6 @@ class TuntutanController extends Controller
         if ($request->has('entiti') && !is_null($request->input('entiti')))
         {
             $query = Tuntutan::with('individu')
-            ->where('employeeno', auth()->user()->profile->employeeno)
             ->where('entiti_id', '=', $request->input('entiti'))
             ->select([
                 'tblertuntutan.*'
@@ -37,7 +36,6 @@ class TuntutanController extends Controller
         else
         {
             $query = Tuntutan::with('individu')
-            ->where('employeeno', auth()->user()->profile->employeeno)
             ->select([
                 'tblertuntutan.*'
             ]);
@@ -80,8 +78,8 @@ class TuntutanController extends Controller
      */
     public function create()
     {
-        $pengguna = auth()->user();
-        // $pengguna = auth()->user();
+        // Dapatkan rekod user yang sedang login
+        $pengguna = Auth::user();
 
         $pesakit = $pengguna->profile
         ->individu()
@@ -127,8 +125,8 @@ class TuntutanController extends Controller
 
         // Dapatkan semua data dari borang
         $data = $request->all();
-        $data['employeeno'] = auth()->user()->profile->employeeno;
-        $data['idpenggunamasuk'] = auth()->user()->id;
+        $data['employeeno'] = Auth::user()->profile->employeeno;
+        $data['idpenggunamasuk'] = Auth::user()->id;
         $data['tkhmasamasuk'] = Carbon::now();
         $data['tkhmasakmskini'] = Carbon::now();
 
@@ -140,7 +138,7 @@ class TuntutanController extends Controller
         $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
         $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
         $dataStatus['employeeno'] = $data['employeeno'];
-        $dataStatus['idpenggunamasuk'] = auth()->user()->id;
+        $dataStatus['idpenggunamasuk'] = Auth::user()->id;
         $dataStatus['tkhmasamasuk'] = Carbon::now();
         $dataStatus['tkhmasakmskini'] = Carbon::now();
 
@@ -189,7 +187,7 @@ class TuntutanController extends Controller
         }
 
         // Bagi respon akhir
-        return redirect()->route('pengguna.tuntutan.index');
+        return redirect()->route('tuntutan.index');
     }
 
     /**
@@ -198,19 +196,9 @@ class TuntutanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Tuntutan $tuntutan)
+    public function show($id)
     {
-        $pengguna = auth()->user();
-        // $pengguna = auth()->user();
-        
-        if ($tuntutan->employeeno != $pengguna->profile->employeeno)
-        {
-            return redirect()->route('home')->with('alert-danger', 'Anda tidak mempunyai kebenaran untuk melihat halaman yang ingin diakses!');
-        }
-        // Dapatkan jumlah telah dituntut
-        $jumlah_telah_dituntut = Tuntutan::jumlahTelahDituntut($tuntutan->employeeno);
-
-        return view($this->theme . '.show', compact('tuntutan', 'pengguna', 'pesakit', 'klinik', 'jumlah_telah_dituntut'));
+        //
     }
 
     /**
@@ -221,18 +209,8 @@ class TuntutanController extends Controller
      */
     public function edit(Tuntutan $tuntutan)
     {
-        $pengguna = auth()->user();
+        $pengguna = Auth::user();
         // $pengguna = auth()->user();
-        
-        if ($tuntutan->employeeno != $pengguna->profile->employeeno)
-        {
-            return redirect()->route('home')->with('alert-danger', 'Anda tidak mempunyai kebenaran untuk melihat halaman yang ingin diakses!');
-        }
-        
-        if ($tuntutan->statusAkhir->statustuntutan_id != 23)
-        {
-            return redirect()->route('home')->with('alert-danger', 'Status tuntutan anda sudah tidak dapat diubah kerana bukan dalam mod DRAF');
-        }
 
         $pesakit = $pengguna->profile
         ->individu()
@@ -246,7 +224,6 @@ class TuntutanController extends Controller
         // Dapatkan jumlah telah dituntut
         $jumlah_telah_dituntut = Tuntutan::jumlahTelahDituntut($tuntutan->employeeno);
 
-        
         return view($this->theme . '.edit', compact('tuntutan', 'pengguna', 'pesakit', 'klinik', 'jumlah_telah_dituntut'));
     }
 
@@ -275,7 +252,7 @@ class TuntutanController extends Controller
 
         // Dapatkan semua data dari borang
         $data = $request->all();
-        $data['idpenggunakemaskini'] = auth()->user()->id;
+        $data['idpenggunakemaskini'] = Auth::user()->id;
         $data['tkhmasakmskini'] = Carbon::now();
 
         // Kemaskini data kepada table tuntutan
@@ -298,7 +275,7 @@ class TuntutanController extends Controller
         $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
         $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
         $dataStatus['employeeno'] = $tuntutan->employeeno;
-        $dataStatus['idpenggunamasuk'] = auth()->user()->id;
+        $dataStatus['idpenggunamasuk'] = Auth::user()->id;
         $dataStatus['tkhmasamasuk'] = Carbon::now();
         $dataStatus['tkhmasakmskini'] = Carbon::now();
 
@@ -311,7 +288,7 @@ class TuntutanController extends Controller
         }
 
         // Bagi respon akhir
-        return redirect()->route('pengguna.tuntutan.index');
+        return redirect()->route('tuntutan.index');
     }
 
     /**
@@ -324,7 +301,7 @@ class TuntutanController extends Controller
     {
         $tuntutan->delete();
 
-        // return redirect()->route('pengguna.tuntutan.index');
+        // return redirect()->route('tuntutan.index');
         return redirect()->back();
     }
 }

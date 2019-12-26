@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Pengguna;
+namespace App\Http\Controllers\Kewangan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class TuntutanExportController extends Controller
     {
         $senarai_tuntutan = !is_null($request->input('entiti')) ? Tuntutan::where('entiti_id', '=', $request->input('entiti'))->get() : Tuntutan::all();
 
-        $pdf = PDF::loadView('tuntutan/pdf', compact('senarai_tuntutan'));
+        $pdf = PDF::loadView('kewangan/tuntutan/pdf', compact('senarai_tuntutan'));
         return $pdf->download('tuntutan.pdf');
     }
 }
