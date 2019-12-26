@@ -110,9 +110,18 @@ class IndividuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Individu $individu)
     {
-        //
+        $request->validate([
+            'individunama' => 'required'
+        ]);
+
+        $data = $request->all();
+        $data['employeeno'] = auth()->user()->profile->employeeno;
+
+        $individu->update($data);
+
+        return redirect()->route('pengguna.individu.index')->with('alert-success', 'Rekod berjaya dikemaskini');
     }
 
     /**
@@ -123,6 +132,8 @@ class IndividuController extends Controller
      */
     public function destroy(Individu $individu)
     {
-        return view($this->theme . '.show', compact('individu'));
+        $individu->delete();
+        
+        return redirect()->route('pengguna.individu.index')->with('alert-success', 'Rekod berjaya dipadam');
     }
 }

@@ -20,15 +20,15 @@
 
                 <div class="card-body">
 
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <div class="row">
                         <div class="col-md-8">
@@ -77,18 +77,11 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="individu_id" class="col-sm-3 col-form-label">Alamat Penuh Klinik</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" name=></textarea>
-                                </div>
-                            </div>
                             
                             <div class="form-group row">
                                 <label for="baki" class="col-sm-3 col-form-label">Baki Yang Boleh Dituntut (RM)</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="baki" value="0.00" readonly>
+                                    <input type="number" min="1" step="1" class="form-control" name="baki" value="{{ $jumlah_baki ?? "0.00" }}" readonly>
                                 </div>
                             </div>
                             
@@ -102,7 +95,7 @@
                             <div class="form-group row">
                                 <label for="ertuntutanamaun" class="col-sm-3 col-form-label">Amaun</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="{{ $tuntutan->ertuntutanamaun }}">
+                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="{{ $tuntutan->ertuntutanamaun ?? "0.00" }}">
                                 </div>
                             </div>
                             
@@ -146,7 +139,7 @@
                             <div class="form-group row">
                                 <div class="col-md-8">Baki</div>
                                 <div class="col-md-4">
-                                    RM100.00
+                                    {{ $jumlah_baki ?? "0.00" }}
                                 </div>
                             </div>
 

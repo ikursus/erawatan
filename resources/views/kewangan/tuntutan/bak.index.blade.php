@@ -59,6 +59,7 @@
 <table class="table table-hover table-bordered" id="tuntutan-datatables">
 <thead class="thead-light">
     <tr>
+        <th>#</th>
         <th>ID TUNTUTAN</th>
         <th>ID STATUS</th>
         <th>TARIKH RAWATAN</th>
@@ -69,20 +70,6 @@
         <th>TINDAKAN</th>
     </tr>
 </thead>
-<tbody>
-    @foreach ($query as $status)
-    <tr>
-        <td>{{ $status->ertuntutan_id }}</td>
-        <td>{{ $status->last_id }}</td>
-        <td>{{ $status->tuntutan->ertuntutantarikhrawat ?? "" }}</td>
-        <td>{{ $status->tuntutan->individu->individunama ?? "" }}</td>
-        <td>{{ $status->tuntutan->entiti->entitinama ?? "" }}</td>
-        <td>{{ $status->tuntutan->ertuntutanamaun ?? "" }}</td>
-        <td>{{ $status->refStatus->status ?? "" }}</td>
-        <td></td>
-    </tr>
-    @endforeach
-</tbody>
 </table>
 
 </div>
@@ -101,3 +88,33 @@
 </div>
 @endsection
 
+@section('script')
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#tuntutan-datatables').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('kewangan.tuntutan.datatables', ['entiti' => request()->input('entiti')]) }}",
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'id', name: 'tblertuntutan.id' },
+            { data: 'status_id', name: 'status_id' },
+            { data: 'ertuntutantarikhrawat', name: 'tblertuntutan.ertuntutantarikhrawat' },
+            { data: 'individu.individunama', name: 'individu.individunama' },
+            { data: 'entiti', name: 'entiti' },
+            { data: 'ertuntutanamaun', name: 'tblertuntutan.ertuntutanamaun' },
+            { data: 'status', name: 'status' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+});
+</script>
+<script>
+    $(document).ready( function () {
+        $('.dropdown-select2').select2();
+    });
+</script>
+
+@endsection

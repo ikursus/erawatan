@@ -8,8 +8,9 @@ use Auth;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Support\Facades\Mail;
-
+use DB;
 use App\Tuntutan;
+use App\TuntutanStatus;
 use App\Entiti;
 use App\Mail\TuntutanBaru;
 
@@ -27,19 +28,22 @@ class TuntutanController extends Controller
         // Check filter custom based on Entiti
         if ($request->has('entiti') && !is_null($request->input('entiti')))
         {
-            $query = Tuntutan::with('individu')
-            ->where('entiti_id', '=', $request->input('entiti'))
-            ->select([
-                'tblertuntutan.*'
-            ]);
+            $query = Tuntutan::join('tblertuntutanstatus', 'tblertuntutan.id', '=', 'tblertuntutanstatus.ertuntutan_id')
+            ->with('individu')
+            ->whereIn('tblertuntutanstatus.statustuntutan_id', [1,25])
+            ->where('tblertuntutan.entiti_id', '=', $request->input('entiti'))
+            ->select(['tblertuntutan.*', 'tblertuntutanstatus.statustuntutan_id']);
         }
         else
         {
-            $query = Tuntutan::with('individu')
-            ->select([
-                'tblertuntutan.*'
-            ]);
-            
+            $query = Tuntutan::join('tblertuntutanstatus', function ($join) {
+                $join->on('tblertuntutan.id', '=', 'tblertuntutanstatus.ertuntutan_id')
+                     ->whereIn('tblertuntutanstatus.statustuntutan_id', [1, 25])
+                     ->orderBy('tblertuntutanstatus.id', 'desc')
+                     ->limit(1);
+            })
+            ->with('individu')
+            ->select(['tblertuntutan.*', 'tblertuntutanstatus.id as status_id', 'tblertuntutanstatus.statustuntutan_id']);
         }
 
         // Return response ajax datatables
@@ -53,6 +57,7 @@ class TuntutanController extends Controller
         ->addColumn('action', function ($tuntutan) {
             return view($this->theme . '.actions', compact('tuntutan'));
         })
+        ->addIndexColumn()
         ->make(true);
     }
 
@@ -68,7 +73,14 @@ class TuntutanController extends Controller
         ->select('entitinama', 'id')
         ->get();
 
-        return view($this->theme . '.index', compact('senarai_entiti'));
+        $sub = TuntutanStatus::orderBy('id','DESC');
+
+        $query = TuntutanStatus::whereIn('statustuntutan_id', [1, 25])
+                ->select('tblertuntutanstatus.*', DB::raw('MAX(id) as last_id'))
+                ->groupBy('ertuntutan_id')
+                ->paginate(10);
+
+        return view($this->theme . '.index', compact('senarai_entiti', 'query'));
     }
 
 
@@ -81,28 +93,6 @@ class TuntutanController extends Controller
      */
     public function update(Request $request, Tuntutan $tuntutan)
     {
-
-        // Semak jenis submission (simpan = draf / hantar = baru)
-        if ($request->has('hantar'))
-        {
-            // Validate data dari borang
-            $request->validate([
-                'ertuntutantarikhrawat' => 'required',
-                'ertuntutannoresit' => 'required',
-                'ertuntutanamaun' => 'required|numeric',
-                'fileresit' => 'required|mimes:docx,pdf,jpg,png',
-                'filedokumen' => 'required|mimes:docx,pdf,jpg,png'
-            ]);
-        }
-
-        // Dapatkan semua data dari borang
-        $data = $request->all();
-        $data['idpenggunakemaskini'] = Auth::user()->id;
-        $data['tkhmasakmskini'] = Carbon::now();
-
-        // Kemaskini data kepada table tuntutan
-        $tuntutan->update($data);
-
         // Sediakan data untuk table tblertuntutanstatus
         if ( $tuntutan->status()->count() > 0 )
         {
@@ -117,22 +107,17 @@ class TuntutanController extends Controller
         }
         
         $dataStatus['ertuntutanstatusno'] = $statusNo;
-        $dataStatus['statustuntutan_id'] = $request->has('hantar') ?  24 : 23;
+        $dataStatus['statustuntutan_id'] = 25;
         $dataStatus['ertuntutanstatustarikh'] = Carbon::now();
         $dataStatus['employeeno'] = $tuntutan->employeeno;
-        $dataStatus['idpenggunamasuk'] = Auth::user()->id;
+        $dataStatus['idpenggunamasuk'] = auth()->user()->id;
         $dataStatus['tkhmasamasuk'] = Carbon::now();
         $dataStatus['tkhmasakmskini'] = Carbon::now();
 
         // Simpan dataStatus kepada table tblertuntutanstatus
         $tuntutan->status()->create($dataStatus);
 
-        if ($request->has('hantar'))
-        {
-            Mail::to('system@erawatan.test')->send(new TuntutanBaru($tuntutan));
-        }
-
         // Bagi respon akhir
-        return redirect()->route('kewangan.tuntutan.index');
+        return redirect()->route('kewangan.tuntutan.index')->with('alert-danger', 'Rekod berjaya dikemaskini.');;
     }
 }

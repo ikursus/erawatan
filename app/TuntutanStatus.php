@@ -37,6 +37,11 @@ class TuntutanStatus extends Model
         'tkhmasakmskini'
     ];
     // Relation kepada table tblrefstatus
+    public function tuntutan()
+    {
+        return $this->belongsTo(Tuntutan::class, 'ertuntutan_id');
+    }
+    // Relation kepada table tblrefstatus
     public function refStatus()
     {
         return $this->belongsTo(Status::class, 'statustuntutan_id');

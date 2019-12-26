@@ -76,18 +76,11 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="individu_id" class="col-sm-3 col-form-label">Alamat Penuh Klinik</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
                             
                             <div class="form-group row">
                                 <label for="baki" class="col-sm-3 col-form-label">Baki Yang Boleh Dituntut (RM)</label>
                                 <div class="col-sm-9">
-                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="200.00">
+                                    <input type="number" min="1" step="1" class="form-control" name="ertuntutanamaun" value="{{ $jumlah_baki ?? "0.00" }}">
                                 </div>
                             </div>
                             

@@ -2,7 +2,6 @@
     
     <a href="{{ route('pengguna.tuntutan.show', $tuntutan->id) }}" class="btn btn-sm btn-primary">LIHAT</a>
 
-    @if ($tuntutan->statusAkhir->statustuntutan_id != 24)
     <a href="{{ route('pengguna.tuntutan.edit', $tuntutan->id) }}" class="btn btn-sm btn-info">KEMASKINI</a>
 
     <!-- Button trigger modal -->
@@ -38,4 +37,3 @@
 
     </div>
     </div>
-    @endif
