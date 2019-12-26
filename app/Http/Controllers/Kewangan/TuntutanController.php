@@ -75,10 +75,14 @@ class TuntutanController extends Controller
 
         $sub = TuntutanStatus::orderBy('id','DESC');
 
-        $query = TuntutanStatus::whereIn('statustuntutan_id', [1, 25])
-                ->select('tblertuntutanstatus.*', DB::raw('MAX(id) as last_id'))
-                ->groupBy('ertuntutan_id')
-                ->paginate(10);
+        $latestStatus = TuntutanStatus::select('ertuntutan_id', DB::raw('MAX(id) as last_id'))
+            ->whereIn('statustuntutan_id', [1, 25])
+            ->groupBy('ertuntutan_id');
+
+        $query = Tuntutan::joinSub($latestStatus, 'latest_status', function ($join) {
+                    $join->on('tblertuntutan.id', '=', 'latest_status.ertuntutan_id');
+                })
+                ->get();
 
         return view($this->theme . '.index', compact('senarai_entiti', 'query'));
     }

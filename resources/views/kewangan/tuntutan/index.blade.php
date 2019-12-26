@@ -78,7 +78,7 @@
         <td>{{ $status->tuntutan->individu->individunama ?? "" }}</td>
         <td>{{ $status->tuntutan->entiti->entitinama ?? "" }}</td>
         <td>{{ $status->tuntutan->ertuntutanamaun ?? "" }}</td>
-        <td>{{ $status->refStatus->status ?? "" }}</td>
+        <td>{{ $status->statusAkhir->refStatus->status ?? "" }}</td>
         <td></td>
     </tr>
     @endforeach
